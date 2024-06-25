@@ -47,3 +47,8 @@ val_evaluator = dict(type='Accuracy', topk=(1, 5))
 train_cfg = dict(max_epochs=100)
 
 test_cfg = None
+
+default_hooks = dict(
+    checkpoint=dict(type='CheckpointHook', interval=1,
+                    max_keep_ckpts=20, save_best="auto"),
+)
