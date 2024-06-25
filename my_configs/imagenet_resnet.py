@@ -1,5 +1,6 @@
 _base_ = [
-    '../configs/_base_/default_runtime.py'
+    '../configs/_base_/default_runtime.py',
+    '../configs/_base_/schedules/imagenet_bs4096_AdamW.py',
 ]
 
 model = dict(
@@ -56,24 +57,6 @@ val_dataloader = dict(
 
 val_evaluator = dict(type='Accuracy', topk=(1, 5))
 
+train_cfg = dict(max_epochs=100)
 
-optim_wrapper = dict(
-    type='OptimWrapper',
-    optimizer=dict(
-        type='Adam',
-        lr=0.001,
-        betas=(0.9, 0.999),
-        eps=1e-08,
-        weight_decay=0,
-        amsgrad=False
-    ),
-)
-
-param_scheduler = dict(
-    type='MultiStepLR', by_epoch=True, milestones=[30, 60, 90], gamma=0.1)
-
-train_cfg = dict(by_epoch=True, max_epochs=100, val_interval=1)
-
-val_cfg = dict()
-
-auto_scale_lr = dict(base_batch_size=32)
+test_cfg = None
