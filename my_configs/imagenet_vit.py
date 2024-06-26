@@ -71,9 +71,9 @@ optim_wrapper = dict(
 param_scheduler = dict(type='MultiStepLR', by_epoch=True,
                        milestones=[30, 60, 90], gamma=0.1)
 
-train_cfg = dict(by_epoch=True, max_epochs=100, val_interval=1)
+val_evaluator = dict(type='Accuracy', topk=(1, 5))
 
-test_cfg = dict()
+train_cfg = dict(by_epoch=True, max_epochs=100, val_interval=1)
 
 val_cfg = dict()
 
