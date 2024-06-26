@@ -1,7 +1,6 @@
 _base_ = [
     '../configs/_base_/default_runtime.py',
     '../configs/_base_/datasets/cifar10_bs16.py',
-    '../configs/_base_/schedules/cifar10_bs128.py',
 ]
 
 model = dict(
@@ -43,6 +42,27 @@ val_dataloader = dict(
         pipeline=pipeline
     ),
 )
+
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=dict(
+        type='Adam',
+        lr=0.001,
+        betas=(0.9, 0.999),
+        eps=1e-08,
+        weight_decay=0,
+        amsgrad=False
+    ),
+)
+
+param_scheduler = dict(type='MultiStepLR', by_epoch=True,
+                       milestones=[30, 60, 90], gamma=0.1)
+
+train_cfg = dict(by_epoch=True, max_epochs=100, val_interval=1)
+
+test_cfg = dict()
+
+val_cfg = dict()
 
 default_hooks = dict(
     checkpoint=dict(type='CheckpointHook', interval=1,
