@@ -26,11 +26,18 @@ model = dict(
         in_channels=768,
         loss=dict(type='LabelSmoothLoss', label_smooth_val=0.1,
                   mode='classy_vision'),
-    ))
+    ),
+    train_cfg=dict(augments=[
+        dict(type='Mixup', alpha=0.8),
+        dict(type='CutMix', alpha=1.0),
+    ])
+)
 
 pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=(224, 224)),
+    dict(type='RandomResizedCrop', scale=224),
+    dict(type='RandomFlip', prob=0.5, direction=['horizontal', 'vertical']),
+    dict(type='ColorJitter', brightness=0.4, contrast=0.4, saturation=0.4),
     dict(type='PackInputs')
 ]
 
@@ -59,4 +66,12 @@ test_cfg = None
 default_hooks = dict(
     checkpoint=dict(type='CheckpointHook', interval=1,
                     max_keep_ckpts=20, save_best="auto"),
+)
+
+visualizer = dict(
+    type='UniversalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+        dict(type='TensorboardVisBackend')
+    ],
 )
