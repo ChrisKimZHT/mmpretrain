@@ -21,7 +21,6 @@ model = dict(
     ))
 
 pipeline = [
-    dict(type='RandomResizedCrop', scale=224),
     dict(type='RandomFlip', prob=0.5, direction=['horizontal', 'vertical']),
     dict(type='ColorJitter', brightness=0.4, contrast=0.4, saturation=0.4),
     dict(type='PackInputs')
