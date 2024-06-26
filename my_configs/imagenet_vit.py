@@ -10,7 +10,7 @@ model = dict(
         type='VisionTransformer',
         arch='b',
         img_size=224,
-        patch_size=32,
+        patch_size=16,
         drop_rate=0.1,
         init_cfg=[
             dict(
@@ -24,9 +24,8 @@ model = dict(
         type='VisionTransformerClsHead',
         num_classes=100,
         in_channels=768,
-        hidden_dim=3072,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        topk=(1, 5),
+        loss=dict(type='LabelSmoothLoss', label_smooth_val=0.1,
+                  mode='classy_vision'),
     ))
 
 pipeline = [
